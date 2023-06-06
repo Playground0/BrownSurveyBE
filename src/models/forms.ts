@@ -3,12 +3,7 @@ import mongoose from "mongoose";
 const FormSchema = new mongoose.Schema({
     formname: {type: String, required: true},
     formtype: {type: String, required: true},
-    formcategory :{type: String, required: true},
-    // authentication: {
-    //     password: {type: String, required: true, select:false},
-    //     salt: {type: String, select:false},
-    //     sessionToken: {type: String, select: false}
-    // },
+    formcategory :{type: String, required: true}
 });
 
 export const FormModel = mongoose.model('Form', FormSchema);
