@@ -4,6 +4,7 @@ import { deleteForm, getAllForms, newForm, updateForm, getFormDetails, titleAuth
 
 export default (router: express.Router) => {
     router.get('/forms/getAll',getAllForms);
+    router.get('/forms/:formType/getAll',getAllForms);
     router.post('/forms/new',newForm);
     router.get('/forms/titleAuthentication/:title',titleAuthentication);
     router.get('/forms/admin/:formType/:configuratioName',getFormConfiguration);

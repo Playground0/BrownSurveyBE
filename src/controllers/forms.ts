@@ -6,7 +6,11 @@ import { getConfigurationByType } from '../models/admin_configurations';
 
 export const getAllForms = async (req: express.Request, res: express.Response) => {
     try {
-        const allForm: any[] = await getForms();
+        const { formType } = req.params;
+        let allForm: any[] = await getForms();
+        if(formType){
+            allForm = allForm.filter((ele) => ele.fm_type === formType);
+        }
         const returnFoms: ShowFormOnHome[] = allForm.map((elem) => {
             return {
                 Id: elem._id,

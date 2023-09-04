@@ -23,7 +23,7 @@ const FormSchema = new mongoose.Schema({
     fm_category_Id: {type: String, required: true},
     fm_type: {type: String, required: true},
     fm_title: {type: String, required: true},
-    fm_status: {type: Boolean, required: true},
+    fm_status: {type: String, required: true},
     fm_stage: {type: String, required: true},
     fm_submit_count: String,
     fm_created_date: {type: String, required: true},
