@@ -20,7 +20,18 @@ export interface FormAnswerModel {
     formCategory: string,
     formType: string,
     SubmitDate: string,
-    formQuestions: FormQuestions[]
+    formAnswer: Answers[],
+    name:string,
+    email:string,
+    age: string,
+    location: string
+}
+export interface Answers{
+    question: string,
+    type: string,
+    options:QuestionOptions | undefined | null
+    Answer1: string,
+    Answer2: string
 }
 export interface FormQuestions{
     question : string,
