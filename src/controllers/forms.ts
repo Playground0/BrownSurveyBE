@@ -157,6 +157,7 @@ export const getFormConfiguration = async (req: express.Request, res:express.Res
 export const newFormAnswer = async (req: express.Request, res:express.Response) => {
     try {
         const formModel: FormAnswerModel = req.body;
+        console.log(formModel)
         const form = await submitFormAnswer({
             sbt_userId: formModel.userID,
             sbt_username: formModel.userName,
@@ -165,7 +166,11 @@ export const newFormAnswer = async (req: express.Request, res:express.Response) 
             sbt_category: formModel.formCategory,
             sbt_type: formModel.formType,
             sbt_submitted_date: formModel.SubmitDate,
-            sbt_fm_questions : formModel.formQuestions
+            sbt_fm_questions : formModel.formAnswer,
+            sbt_res_name: formModel.name,
+            sbt_res_email: formModel.email,
+            sbt_res_age: formModel.age,
+            sbt_res_location: formModel.location
         });
         let updateForm: any = await getFormById(formModel.formId);
         updateForm.fm_submit_users.push({
@@ -175,7 +180,12 @@ export const newFormAnswer = async (req: express.Request, res:express.Response) 
         updateForm.fm_submit_count = Number(updateForm.fm_submit_count) + 1;
         updateForm.save();
 
-        return res.status(200).json(form).end();
+        return res.status(200).json({
+            Id : formModel.formId,
+            FormName: formModel.formTitle,
+            Action: "FORM_SUBMIT",
+            ActionStatus: "SUCCED"
+        }).end();
 
     } catch (error) {
         console.log(error);

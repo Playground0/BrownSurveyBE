@@ -44,6 +44,10 @@ const FormAnswerSchema = new mongoose.Schema({
     sbt_type: {type: String, required: true},
     sbt_submitted_date: {type: String, required: true},
     sbt_fm_questions : [],
+    sbt_res_name: {type: String},
+    sbt_res_email: {type: String},
+    sbt_res_age: {type: String},
+    sbt_res_location: {type: String},
 });
 
 export const FormModel = mongoose.model('Form', FormSchema);
