@@ -68,7 +68,7 @@ export const register = async (req: express.Request, res: express.Response) => {
 
         if (!email || !password || !username) {
             return res.status(400).json({
-                Action: "Login",
+                Action: "Sign Up",
                 Action_Status: "Sign Up FAILED - Missing Information",
             });
         }
@@ -76,7 +76,7 @@ export const register = async (req: express.Request, res: express.Response) => {
         const existingUser = await getUserByEmail(email);
         if (existingUser) {
             return res.status(403).json({
-                Action: "Login",
+                Action: "Sign Up",
                 Action_Status: "Sign Up FAILED - USER Exists",
             });
         }
@@ -91,8 +91,8 @@ export const register = async (req: express.Request, res: express.Response) => {
             }
         });
         return res.status(200).json({
-            Action: "Login",
-            Action_Status: "Sign Up FAILED - USER Exists",
+            Action: "Sign Up",
+            Action_Status: "SUCCESS",
             Response: {
                 username: user.username,
                 email: user.email
@@ -102,7 +102,7 @@ export const register = async (req: express.Request, res: express.Response) => {
     } catch (error) {
         console.log(error);
         return res.status(400).json({
-            Action: "Login",
+            Action: "Sign Up",
             Action_Status: "Sign Up FAILED - Something went wrong!",
         });;
     }
