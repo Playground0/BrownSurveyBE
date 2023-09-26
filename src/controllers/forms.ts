@@ -9,7 +9,7 @@ export const getAllForms = async (req: express.Request, res: express.Response) =
         const { formType } = req.params;
         let allForm: any[] = await getForms();
         if(formType){
-            allForm = allForm.filter((ele) => ele.fm_type === formType);
+            allForm = allForm.filter((ele) => ele.fm_type === formType && ele.fm_status === "Public");
         }
         const returnForms: ShowFormOnHome[] = allForm.map((elem) => {
             return {
