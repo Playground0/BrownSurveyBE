@@ -59,3 +59,4 @@ export const getFormByName = (formName:string) => FormModel.findOne({fm_title:fo
 export const getFormById = (id:string) => FormModel.findById(id);
 export const deleteFormById = (id:string) => FormModel.findOneAndDelete({_id:id});
 export const submitFormAnswer = (values: Record<string,any>) => new FormAnswerModel(values).save().then(((form) => form.toObject()));
+export const getFormByUser = (userId:string) => FormModel.find({fm_userId:userId}).sort({_id: -1});

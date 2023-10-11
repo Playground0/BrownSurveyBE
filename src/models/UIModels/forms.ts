@@ -52,6 +52,21 @@ export interface ShowFormOnHome{
     formTitle: string,
     userID: string,
     userCount: string,
-    createdOn: string,
+    createdOn?: string,
     createdBy: string
+}
+export interface ShowFormsOnDashboard{
+    Id: string | null;
+    formname: string;
+    type: string;
+    participants: number;
+    status: string;
+    startDate: string,
+    endDate: string
+}
+export interface ShowDraftedForms{
+    Id: string | null;
+    formname: string;
+    type: string;
+    startDate: string,
 }

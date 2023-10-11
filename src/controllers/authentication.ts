@@ -64,7 +64,7 @@ export const login = async (req: express.Request, res: express.Response) => {
 
 export const register = async (req: express.Request, res: express.Response) => {
     try {
-        const { email, password, username } = req.body;
+        const { email, password, username, fullname, phonenumber, location, age, profilePicture } = req.body;
 
         if (!email || !password || !username) {
             return res.status(400).json({
@@ -88,7 +88,12 @@ export const register = async (req: express.Request, res: express.Response) => {
             authentication: {
                 salt,
                 password: authentication(salt, password)
-            }
+            },
+            fullname,
+            phonenumber,
+            location,
+            age,
+            profilePicture
         });
         return res.status(200).json({
             Action: "Sign Up",

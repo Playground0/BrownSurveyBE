@@ -220,6 +220,49 @@ export const getTrendingForm = async (req:express.Request, res:express.Response)
         return res.sendStatus(400);
     }
 }
+export const updateStatus = async (req:express.Request, res:express.Response) => {
+    
+    try {
+        const { formId, status } = req.params;
+
+        if (!formId) {
+            return res.status(400).json({
+                Action: "Update Status",
+                Action_Status: "Failed - Missing Form ID",
+                Response: {} 
+            }).end();
+        }
+        if(!status){
+            return res.status(400).json({
+                Action: "Update Status",
+                Action_Status: "Failed - Missing Status Value",
+                Response: {} 
+            }).end();;
+        }
+        const form = await getFormById(formId);
+        if (form) {
+            form.fm_status = status;
+            await form?.save();
+            return res.status(200).json({
+                Action: "Update Status",
+                Action_Status: "Successuly Updated",
+                Response: {
+                    id:form.id,
+                    formName: form.fm_title
+                } 
+            }).end();
+        }
+    }
+    catch(err){
+        console.log(err);
+        return res.status(400).json({
+            Action: "Update Status",
+            Action_Status: "Failed - Something went wrong",
+            Response: {} 
+        }).end();;
+    }
+
+}
 function checkForQuestionTypes(configuratioName:string,collections: any[],formType:string) : any[]{
     if(configuratioName !== "Question Types"){
         return collections;
