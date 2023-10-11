@@ -47,7 +47,8 @@ export const login = async (req: express.Request, res: express.Response) => {
                 id: user._id,
                 email: user.email,
                 username: user.username,
-                sessionToken: user.authentication.sessionToken
+                sessionToken: user.authentication.sessionToken,
+                userRole: user.userRole
             }
         }
         return res.status(200).json(returnObj).end();
@@ -64,9 +65,9 @@ export const login = async (req: express.Request, res: express.Response) => {
 
 export const register = async (req: express.Request, res: express.Response) => {
     try {
-        const { email, password, username } = req.body;
+        const { email, password, username, fullname, phonenumber, location, age, profilePicture, userRole } = req.body;
 
-        if (!email || !password || !username) {
+        if (!email || !password || !username || !userRole) {
             return res.status(400).json({
                 Action: "Sign Up",
                 Action_Status: "Sign Up FAILED - Missing Information",
@@ -88,7 +89,13 @@ export const register = async (req: express.Request, res: express.Response) => {
             authentication: {
                 salt,
                 password: authentication(salt, password)
-            }
+            },
+            fullname,
+            phonenumber,
+            location,
+            age,
+            profilePicture,
+            userRole
         });
         return res.status(200).json({
             Action: "Sign Up",

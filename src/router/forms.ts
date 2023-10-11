@@ -1,5 +1,5 @@
 import express from 'express';
-import { deleteForm, getAllForms, newForm, updateForm, getFormDetails, titleAuthentication, getFormConfiguration, newFormAnswer, getTrendingForm } from '../controllers/forms';
+import { deleteForm, getAllForms, newForm, updateForm, getFormDetails, titleAuthentication, getFormConfiguration, newFormAnswer, getTrendingForm, updateStatus } from '../controllers/forms';
 
 
 export default (router: express.Router) => {
@@ -10,6 +10,7 @@ export default (router: express.Router) => {
     router.get('/forms/titleAuthentication/:title',titleAuthentication);
     router.get('/forms/admin/:formType/:configuratioName',getFormConfiguration);
     router.post('/forms/submitAnswer',newFormAnswer);
+    router.patch('/forms/udpateStatus/:formId/:status',updateStatus);
     router.route('/forms/:id')
     .get(getFormDetails)
     .patch(updateForm)

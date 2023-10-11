@@ -48,21 +48,8 @@ export const newForm = async (req: express.Request, res: express.Response) => {
         if (!formModel.formTitle || !formModel.formType || !formModel.formCategory) {
             return res.sendStatus(400);
         }
-        const form = await createNewForm({
-            fm_userId: formModel.userID,
-            fm_username: formModel.userName,
-            fm_category_Id: formModel.formCategory,
-            fm_type: formModel.formType,
-            fm_title: formModel.formTitle,
-            fm_status: formModel.formStatus,
-            fm_stage: formModel.formStage,
-            fm_submit_count: "0",
-            fm_created_date: formModel.formCreationDate,
-            fm_expiry_date: formModel.formExpirydate,
-            fm_expired: false,
-            fm_submit_users: [],
-            fm_questions: mapFormQuestionForDB(formModel.formQuestions)
-        });
+        let mappedDetails  = mapFormDetailsDB(formModel);
+        const form = await createNewForm(mappedDetails);
         return res.status(200).json(form).end();
 
     } catch (error) {
@@ -86,6 +73,12 @@ export const updateForm = async (req: express.Request, res: express.Response) =>
 
         const form = await getFormById(id);
         if (form) {
+            form.fm_type = updateFormBody.formType;
+            form.fm_title = updateFormBody.formTitle;
+            form.fm_status = updateFormBody.formStatus;
+            form.fm_created_date = updateFormBody.formCreationDate;
+            form.fm_expiry_date = updateFormBody.formExpirydate;
+            form.fm_questions =mapFormQuestionForDB(updateFormBody.formQuestions);
             await form?.save();
             return res.status(200).json(form).end();
         }
@@ -220,6 +213,49 @@ export const getTrendingForm = async (req:express.Request, res:express.Response)
         return res.sendStatus(400);
     }
 }
+export const updateStatus = async (req:express.Request, res:express.Response) => {
+    
+    try {
+        const { formId, status } = req.params;
+
+        if (!formId) {
+            return res.status(400).json({
+                Action: "Update Status",
+                Action_Status: "Failed - Missing Form ID",
+                Response: {} 
+            }).end();
+        }
+        if(!status){
+            return res.status(400).json({
+                Action: "Update Status",
+                Action_Status: "Failed - Missing Status Value",
+                Response: {} 
+            }).end();;
+        }
+        const form = await getFormById(formId);
+        if (form) {
+            form.fm_status = status;
+            await form?.save();
+            return res.status(200).json({
+                Action: "Update Status",
+                Action_Status: "Successuly Updated",
+                Response: {
+                    id:form.id,
+                    formName: form.fm_title
+                } 
+            }).end();
+        }
+    }
+    catch(err){
+        console.log(err);
+        return res.status(400).json({
+            Action: "Update Status",
+            Action_Status: "Failed - Something went wrong",
+            Response: {} 
+        }).end();;
+    }
+
+}
 function checkForQuestionTypes(configuratioName:string,collections: any[],formType:string) : any[]{
     if(configuratioName !== "Question Types"){
         return collections;
@@ -284,4 +320,21 @@ function mapOptionsForUI(formOption: Option | undefined | null) : QuestionOption
         answer1: formOption.answer1,
         answer2: formOption.answer2
     }
+}
+function mapFormDetailsDB(formModel: any) : any {
+      return {
+        fm_userId: formModel.userID,
+        fm_username: formModel.userName,
+        fm_category_Id: formModel.formCategory,
+        fm_type: formModel.formType,
+        fm_title: formModel.formTitle,
+        fm_status: formModel.formStatus,
+        fm_stage: formModel.formStage,
+        fm_submit_count: "0",
+        fm_created_date: formModel.formCreationDate,
+        fm_expiry_date: formModel.formExpirydate,
+        fm_expired: false,
+        fm_submit_users: [],
+        fm_questions: mapFormQuestionForDB(formModel.formQuestions)
+      }      
 }
