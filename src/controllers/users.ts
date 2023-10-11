@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { deleteUserById, getUserById, getUsers } from '../models/users';
+import { deleteUserById, getUserById, getUserRolesFromDB, getUsers } from '../models/users';
 import { getFormByUser } from '../models/forms';
 import { ShowDraftedForms, ShowFormsOnDashboard } from '../models/UIModels/forms';
 import { UserAnalytics } from '../models/UIModels/User';
@@ -89,7 +89,6 @@ export const getUserDetails = async (req: express.Request, res: express.Response
 }
 export const getUserForms = async (req: express.Request, res: express.Response) => {
     const { userId, drafted } = req.params;
-    console.log(drafted)
     if (!userId) {
         let response = {
             Action: "Get User Form Details",
@@ -168,9 +167,31 @@ export const getAnalyticsData = async (req: express.Request, res: express.Respon
         return res.status(400).json(response);
     }
 }
-export const getDraftedForms = async (req: express.Request, res: express.Response) => {
-    let {userId} = req.params;
-
+export const getUserRoles = async (req:express.Request, res: express.Response) => {
+    try{
+        const userRoles:any = await getUserRolesFromDB();
+        if(!userRoles){
+            let response = {
+                Action: "Get User Roles",
+                Action_Status: "Failed: Something went wrong",
+                Response: {}
+            }
+            return res.status(400).json(response);
+        }
+        let response = {
+            Action: "Get User Roles",
+            Action_Status: "Failed: Something went wrong",
+            Response: userRoles
+        }
+        return res.status(200).json(response);
+    }catch(err) {
+        let response = {
+            Action: "Get User Roles",
+            Action_Status: "Failed: Something went wrong",
+            Response: {}
+        }
+        return res.status(400).json(response);
+    }
 }
 function getResponses(forms: ShowFormsOnDashboard[]) {
     let responseCount = 0;
