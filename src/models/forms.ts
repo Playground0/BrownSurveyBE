@@ -55,7 +55,7 @@ export const FormAnswerModel = mongoose.model('FormAnswer', FormAnswerSchema);
 
 export const getForms = () => FormModel.find().sort({ _id: -1 });
 export const createNewForm = (values: Record<string, any>) => new FormModel(values).save().then((form) => form.toObject());
-export const getFormByName = (formName:string) => FormModel.findOne({fm_title:formName});
+export const getFormByName = (formType:string,formName:string, formCategory: string) => FormModel.findOne({fm_type:formType,fm_category_Id:formCategory,fm_title:formName});
 export const getFormById = (id:string) => FormModel.findById(id);
 export const deleteFormById = (id:string) => FormModel.findOneAndDelete({_id:id});
 export const submitFormAnswer = (values: Record<string,any>) => new FormAnswerModel(values).save().then(((form) => form.toObject()));
