@@ -7,7 +7,7 @@ export default (router: express.Router) => {
     router.get('/forms/:formType/getAll',getAllForms);
     router.get('/forms/getTrendingForm',getTrendingForm);
     router.post('/forms/new',newForm);
-    router.get('/forms/titleAuthentication/:title',titleAuthentication);
+    router.get('/forms/titleAuthentication/:title/:category/:type',titleAuthentication);
     router.get('/forms/admin/:formType/:configuratioName',getFormConfiguration);
     router.post('/forms/submitAnswer',newFormAnswer);
     router.patch('/forms/udpateStatus/:formId/:status',updateStatus);

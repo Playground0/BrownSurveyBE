@@ -113,11 +113,11 @@ export const deleteForm = async (req: express.Request, res: express.Response) =>
     }
 }
 export const titleAuthentication = async (req: express.Request, res: express.Response) => {
-    const { title } = req.params;
+    const { title,category,type } = req.params;
     try {
-        const existingForm = await getFormByName(title);
+        const existingForm = await getFormByName(type,title,category);
         let reponse = {
-            Match: existingForm ? true : false,
+            Match: existingForm && existingForm.fm_status !== 'Draft' ? true : false,
             Action: "CHECK_TITLE_MATCH",
             Status: "SUCCED"
         }
